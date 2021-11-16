@@ -4,7 +4,7 @@ from tkinter import ttk
 from urllib.request import urlopen
 # regex
 from re import findall
-key ='RGAPI-aacc5754-3b2a-47ec-81f6-a1a1d4a4a7a8'
+key ='your API KEY'
 summoner = 'nKodta5l2_IqJpVOatbcT4SuBdvMIFAi704o_VXJP19ftCY?'
 # create main window
 root = Tk()
