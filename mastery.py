@@ -4,10 +4,13 @@ from datetime import datetime
 from urllib.request import urlopen
 from re import findall
 
-
-key = 'Your API Key'
+#change the following
+key = 'Your API key'
 summoner = 'Sadmo'
+region = 'oc1'
 champname = 'Teemo'
+
+
 
 ser = serial.Serial()
 ser.port = '/dev/ttyACM0' #Arduino serial port
@@ -21,6 +24,19 @@ except:
     print("Serial port not available")
     exit()
 
+try:
+    version_list = 'https://ddragon.leagueoflegends.com/api/versions.json'
+    version = urlopen(version_list).read().decode('utf-8')
+    version = version.split('","')
+    version = version[0][2:]
+
+    champion_list = f'http://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json'
+    champion_list = urlopen(champion_list).read().decode('utf-8')
+    championId = findall(f'id\":\"{champname}\".\"key\":\"(.+?)\"',champion_list)[0]
+
+except:
+    print("Error in fetching championId")
+    exit()
 
 def generate_message(message1, message2):
     blank = ' '
@@ -44,16 +60,16 @@ def generate_message(message1, message2):
 while 1:
     if i%900 == 0:
         try:
-            masterylist = urlopen(f'https://oc1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner}?api_key={key}', timeout=5)
+            masterylist = urlopen(f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner}?api_key={key}', timeout=5)
             masterylist = masterylist.read().decode('utf-8')
             summonerId = findall(r'\"id\":\"(.+?)\"',masterylist)
             summonerId = summonerId[0]
             level = findall(r'Level\":(.+?)}',masterylist)
             level = level[0]
 
-            masterylist = urlopen(f'https://oc1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summonerId}?api_key={key}', timeout=5)
+            masterylist = urlopen(f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summonerId}?api_key={key}', timeout=5)
             # find string
-            masterypoint = findall("championId\":17.+?ints\":([0-9]+)",masterylist.read().decode('utf-8'))
+            masterypoint = findall(f"championId\":{championId}.+?ints\":([0-9]+)",masterylist.read().decode('utf-8'))
             #update label
             masterypoint = masterypoint[0]
 
@@ -80,3 +96,4 @@ while 1:
     else :
         i = 0
     sleep(1)
+
