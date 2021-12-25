@@ -24,31 +24,22 @@ except:
 
 def generate_message(message1, message2):
     blank = ' '
-    #top row message
-    if (len(message1) < 16) and (len(message1) % 2 == 0):
-        leftside = rightside =(16-len(message1))/2
-        #construct message
-        message = blank*int(leftside) + message1 + blank*int(rightside)
-    elif (len(message1) < 16) and (len(message1) % 2 != 0):
-        leftside = rightside =(15-len(message1))/2
-        #construct message
-        message = ' ' + blank*int(leftside) + message1 + blank*int(rightside)
-    elif (len(message1) == 16):
-        message = message1
-
-    #bottom row message
-    if (len(message2) < 16) and (len(message2) % 2 == 0):
-        leftside = rightside =(16-len(message2))/2
-        #construct message
-        message = message + blank*int(leftside) + message2 + blank*int(rightside)
-    elif (len(message2) < 16) and (len(message2) % 2 != 0):
-        leftside = rightside =(15-len(message2))/2
-        #construct message
-        message = message + ' ' + blank*int(leftside) + message2 + blank*int(rightside)
-    elif (len(message2) == 16):
-        message = message + message2
+    def add_message(content, message = ""):
+        if (len(content) < 16) and (len(content) % 2 == 0):
+            leftside = rightside =(16-len(content))/2
+            #construct message
+            message = message + blank*int(leftside) + content + blank*int(rightside)
+        elif (len(content) < 16) and (len(content) % 2 != 0):
+            leftside = rightside =(15-len(content))/2
+            #construct message
+            message = message + blank + blank*int(leftside) + content + blank*int(rightside)
+        elif (len(content) == 16):
+            message = message + content
+        else :
+            message = message + blank*16
+        return message
     
-    return message
+    return add_message(message2, add_message(message1))
 
 while 1:
     if i%900 == 0:
