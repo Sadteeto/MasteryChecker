@@ -5,7 +5,7 @@ from urllib.request import urlopen
 from re import findall
 
 #change the following
-key = 'RGAPI-14b63153-4eac-4420-befd-bd064eb9e61a'
+key = 'Your API key'
 summoner = 'Sadmo'
 region = 'oc1'
 champname = 'Teemo'
